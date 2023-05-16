@@ -1,0 +1,659 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package UTS_CRUD;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Inayah
+ */
+public class FromProduct extends javax.swing.JFrame {
+    private Connections conn = new Connections();
+    private DefaultTableModel model;
+//auto number
+    private void autonumber(){
+        try{
+            Connection c = Connections.getConnections();
+            Statement s = c.createStatement();
+            String sql = String sql = "SELECT * FROM product_category ORDER BY "
+                        + "id_PCategory DESC";
+            ResultSet r = s.executeQuery(sql);
+            if(r.next()){
+                String SupplierCode = r.getString(sql);
+                String SP = ""+ (Integer.parseInt(SupplierCode)+1);
+                String Zero = "";
+                if(SP.length()==1){
+                    Zero = "00";
+                }else if(SP.length()==2){
+                    Zero = "0";
+                }else{
+                    Zero = "";
+                }
+                txtSupplierCode.setText( "SP"+Zero+SP);
+                }else{
+                txtSupplierCode.setText("SP001");
+            } 
+            r.close();
+            s.close();
+            }catch(Exception e){
+                System.out.println("Auto Number Eoro");
+            }
+    }
+    /**
+     * Creates new form FromSupplier
+     */
+    
+    public void clear(){
+        txtSupplierName.setText("");
+        jLAddress.setText("");
+        txtCompanyName.setText("");
+        txtphoneNumber.setText("");
+        txtphoneNumber.setText("");
+        txtSearch.setText("");
+        txtemail.setText("");
+       
+    }
+    
+    public void loadData(){
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        
+        try{
+            Connection c = Connections.getConnections();
+            Statement s = c.createStatement();
+            
+            String sql = "SELECT p.id_product, p.category_productID, "
+                    + "pc.PCstrgoty_name,p.Supplier_ID,S.supllier_name, "
+                    + "p.product_number,p.product_name,p.stock,"
+                    + "FORMAT(p.price,0) AS price,FORMAT(p.price,0) AS price, "
+                    + "FORMAT(p.selling_price,0) AS selling_price FROM profuct_p "
+                    + "JOIN supplier s on p.supplier JOIM product "
+                    + "p JOIN supplier s ON p.supplier ID =s.id_supplier JOIN "
+                    + "product_category pc ON p.xategory_product"
+                    + "=pc.id_PCategory";
+            ResultSet r =  s.executeQuery(sql);
+            
+            while(r.next());{
+            Object[] o = new Object[10];
+            o [0] = r.getString("id_supplier");
+            o [1] = r.getString("supplier_code");
+            o [2] = r.getString("supplier_name");
+            o [3] = r.getString("SCategory_ID");
+            o [4] = r.getString("SCategory_name");        
+            o [5] = r.getString("Company");
+            o [6] = r.getString("phone_number");
+            o [7] = r.getString("email");
+            o [8] = r.getString("address");
+            model.addRow(o);
+        }
+        r.close();
+        s.close();
+        }catch(SQLException e){
+            System.out.println("Something Worng");
+        }}
+        public void BinCombo(){
+        DBQuerySupplier dq = new DBQuerySupplier();
+            HashMap<String,Integer> map =dq.populateCombo();
+        for(String s : map.keySet()){
+            cbCategorySupplier.addItem(s);
+        }
+        
+        
+        }
+    public FromProduct() {
+        initComponents();
+        
+        this.setLocation(null);
+        txtSupplierCode.setEnabled(false);
+        model = new DefaultTableModel();
+        tblSupplier.setModel(model);
+        //add colum table
+        
+        model.addColumn("ID");
+        model.addColumn("Supplier Code");
+        model.addColumn("Supplier Name");
+        model.addColumn("Category ID");
+        model.addColumn("Supplier Category");
+        model.addColumn("Company Name");
+        model.addColumn("Phone_Number");
+        model.addColumn("Email");
+        model.addColumn("Address");
+        //call fungsion
+        BinCombo();
+        loadData();
+        autonumber();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jButton5 = new javax.swing.JButton();
+        jLSupplier = new javax.swing.JLabel();
+        jLCategorySupplier = new javax.swing.JLabel();
+        jLSuplierCode = new javax.swing.JLabel();
+        jLSupplierName = new javax.swing.JLabel();
+        jLCompanyName = new javax.swing.JLabel();
+        jLPhoneNumber = new javax.swing.JLabel();
+        jLEmail = new javax.swing.JLabel();
+        jLSerch = new javax.swing.JLabel();
+        txtSupplierCode = new javax.swing.JTextField();
+        txtSupplierName = new javax.swing.JTextField();
+        txtCompanyName = new javax.swing.JTextField();
+        txtphoneNumber = new javax.swing.JTextField();
+        jLAddress = new javax.swing.JLabel();
+        btSave = new javax.swing.JButton();
+        btEdit = new javax.swing.JButton();
+        btDelete = new javax.swing.JButton();
+        btCancel = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblSupplier = new javax.swing.JTable();
+        txtemail = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
+        cbCategorySupplier1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        cbCategorySupplier2 = new javax.swing.JComboBox<>();
+
+        jButton5.setText("jButton5");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
+
+        jLSupplier.setText("Product");
+
+        jLCategorySupplier.setText("Product Category");
+
+        jLSuplierCode.setText("Product Number");
+
+        jLSupplierName.setText("Product Name");
+
+        jLCompanyName.setText("Stock");
+
+        jLPhoneNumber.setText("Price");
+
+        jLEmail.setText("Selling Price");
+
+        jLSerch.setText("Search");
+
+        txtSupplierName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSupplierNameActionPerformed(evt);
+            }
+        });
+
+        jLAddress.setText("Supplier");
+
+        btSave.setText("Save");
+        btSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSaveActionPerformed(evt);
+            }
+        });
+
+        btEdit.setText("Edit");
+        btEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEditActionPerformed(evt);
+            }
+        });
+
+        btDelete.setText("Delete");
+        btDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDeleteActionPerformed(evt);
+            }
+        });
+
+        btCancel.setText("Cancel");
+        btCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelActionPerformed(evt);
+            }
+        });
+
+        tblSupplier.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblSupplier);
+
+        txtemail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtemailActionPerformed(evt);
+            }
+        });
+
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
+        cbCategorySupplier1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Data--", "Item 2", "Item 3", "Item 4" }));
+        cbCategorySupplier1.setSelectedIndex(--Select Data--);
+        cbCategorySupplier1.setSelectedItem(--Select Data--);
+        cbCategorySupplier1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCategorySupplier1ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Print");
+
+        cbCategorySupplier2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Data--", "Item 2", "Item 3", "Item 4" }));
+        cbCategorySupplier2.setSelectedIndex(--Select Data--);
+        cbCategorySupplier2.setSelectedItem(--Select Data--);
+        cbCategorySupplier2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCategorySupplier2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLCategorySupplier)
+                    .addComponent(jLSuplierCode)
+                    .addComponent(jLSupplierName)
+                    .addComponent(jLAddress))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSupplierName)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSupplierCode, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(cbCategorySupplier1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbCategorySupplier2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLCompanyName)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLPhoneNumber)
+                            .addComponent(jLEmail))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtphoneNumber))
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(567, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCompanyName, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLSerch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(53, 53, 53))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(363, 363, 363)
+                        .addComponent(jLSupplier))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(btSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btEdit)
+                        .addGap(30, 30, 30)
+                        .addComponent(btDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btCancel)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLSupplier)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLSuplierCode)
+                        .addComponent(txtSupplierCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLCompanyName)
+                        .addComponent(txtCompanyName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLPhoneNumber)
+                        .addComponent(txtphoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLCategorySupplier, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(cbCategorySupplier1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLEmail))
+                    .addComponent(jLSupplierName))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLAddress)
+                    .addComponent(cbCategorySupplier2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLSerch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btSave)
+                    .addComponent(btEdit)
+                    .addComponent(btDelete)
+                    .addComponent(btCancel)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(164, 164, 164))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSaveActionPerformed
+        // TODO add your handling code here:
+        String supplier_name = txtSupplierName.getText();
+        String company       = txtCompanyName.getText();
+        String address       = taAddress.getText();
+        String phone_number  = txtphoneNumber.getText();
+        String email         = txtemail.getText();
+        String SCategory_ID  = txtSearch.getText();
+        String supplier_code = txtSupplierCode.getText();
+        
+        try{
+            Connection c = Connections.getConnections();
+            String sql = "INSERT INTO supplier (supplier_name,company,address,"
+                    + "phone_number,email,SCategory_code";
+            PreparedStatement p = c.prepareStatement(sql);
+            p.setString(1, supplier_name);
+            p.setString(2, company);
+            p.setString(3, address);
+            p.setString(4, phone_number);
+            p.setString(5, email);
+            p.setString(6, supplier_code);
+            p.setString(7, SCategory_ID);
+            
+            p.executeUpdate();
+            p.close();
+            JOptionPane.showMessageDialog(null, "Data Sucessful Saved");
+        }catch(SQLException ex){
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE,null,ex);
+        }finally{
+            loadData();
+            autonumber();
+            clear();
+        }
+            
+        
+    }//GEN-LAST:event_btSaveActionPerformed
+
+    private void btEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditActionPerformed
+        // TODO add your handling code here:
+        int i = tblSupplier.getSelectedRow();
+        if(i==1){
+            return;
+        }
+        String id            = (String)model.getValueAt(1, 0);
+        String supplier_name = txtSupplierName.getText();
+        String company       = txtCompanyName.getText();
+        String address       = taAddress.getText();
+        String phone_number  = txtphoneNumber.getText();
+        String email         = txtemail.getText();
+        String SCategory_ID  = txtSearch.getText();
+        String supplier_code = txtSupplierCode.getText();
+        
+        try{
+            Connection c = Connections.getConnections();
+            String sql = "UPDATE supplier SET supplier_name = ?, company = ?, address = ?,"
+                    + "phone_number = ?";
+            PreparedStatement p = c.prepareStatement(sql);
+            p.setString(1, supplier_name);
+            p.setString(2, company);
+            p.setString(3, address);
+            p.setString(4, phone_number);
+            p.setString(5, email);
+            p.setString(6, supplier_code);
+            p.setString(7, SCategory_ID);
+            p.setString(8, id);
+            
+            p.executeUpdate();
+            p.close();
+            JOptionPane.showMessageDialog(null, "The data has been update");
+        }catch(SQLException e){
+            System.out.println("Update Error");
+        }finally{
+            loadData();
+            autonumber();
+            clear();
+            
+        }
+    }//GEN-LAST:event_btEditActionPerformed
+
+    private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
+        // TODO add your handling code here:
+        int i = tblSupplier.getSelectedRow();
+        if(i == -1){
+            return;
+        } 
+        String id = (String)model.getValueAt(i, 0);
+        int question = JOptionPane.showConfirmDialog(null,
+                "Sure this data will be delet?",
+                "Confrim",JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE); 
+        if(question == JOptionPane.OK_OPTION){
+            try{
+                Connection c = Connections.getConnections();
+                String sql = "DELETE FROM product_category WHERE id_PCategory = ?";
+                try (PreparedStatement p = c.prepareStatement(sql)) {
+                    p.setString(1, id);
+                    p.executeUpdate();
+                }
+                JOptionPane.showMessageDialog(null, "The data been deleted");
+            }catch(SQLException e){
+                System.out.println("Delete Eror");
+            }finally{
+                loadData();
+                autonumber();
+                btSave.setEnabled(true);
+            }
+            if(question == JOptionPane.CANCEL_OPTION){
+            }
+            }
+    }//GEN-LAST:event_btDeleteActionPerformed
+
+    private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
+        // TODO add your handling code here:
+         // TODO add your handling code here:
+         clear();
+        loadData();
+        btSave.setEnabled(true);
+        autonumber();
+    }//GEN-LAST:event_btCancelActionPerformed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+          // TODO add your handling code here:
+        btSave.setEnabled(false);
+        int i = tblcategorySupplier.getSelectedRow();
+        if(i == -1){
+            return;
+        }
+        String supplier_code = (String)model.getValueAt(i, 1);
+        txtSupplierCode.setText(supplier_code);
+        String supplier_name = (String)model.getValueAt(i, 2);
+        txtCompanyName.setText(supplier_name);
+        String SCategory_ID = (String)model.getValueAt(i, 3);
+        txtSearch.setText(SCategory_ID);
+        String company = (String)model.getValueAt(i, 4);
+        txtCompanyName.setText(company);
+        String phone_number = (String)model.getValueAt(i, 5);
+        txtphoneNumber.setText(phone_number);
+        String email = (String)model.getValueAt(i, 6);
+        txtemail.setText(email);
+        String address = (String)model.getValueAt(i, 7);
+        taAddress.setText(address);
+        
+    }//GEN-LAST:event_formMouseClicked
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel tabel = new DefaultTableModel();
+        tabel.addColumn("ID");
+        tabel.addColumn("Supplier code");
+        tabel.addColumn("Supplier Name");
+        tabel.addColumn("Company Name");
+        tabel.addColumn("Phone Number");
+        tabel.addColumn("Email");
+        tabel.addColumn("Address");
+        
+        try{
+            Connection c = Connections.getConnections();
+            String sql = "SELECT s.id_supplier, s.supplier_code, s.supplier_name,"
+                    + "s.email, s.company_category,s.phone_number,s.address "
+                    + "s.SCategory_ID = sc.id_SCategory WHERE supplier_name like "%""
+                    + txtSearch.getText()+"%";
+            Statement s = c.createStatement();
+            ResultSet r = s.executeQuery(sql);
+            
+            while(r.next()){
+                tabel.addRow(new Object[]{
+                r.getString(1);
+                r.getString(2);
+                r.getString(3);
+                r.getString(4);
+                r.getString(5);
+                r.getString(6);
+                r.getString(7);
+                r.getString(8);
+                r.getString(9);
+            });
+    }
+        tblSupplier.setModel(tabel);
+        loadData();
+    }catch(Exception e){
+            System.out.println("Something Wrong");
+        }finally{
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void txtemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtemailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtemailActionPerformed
+
+    private void txtSupplierNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSupplierNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSupplierNameActionPerformed
+
+    private void cbCategorySupplier1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCategorySupplier1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbCategorySupplier1ActionPerformed
+
+    private void cbCategorySupplier2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCategorySupplier2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbCategorySupplier2ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FromProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FromProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FromProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FromProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FromProduct().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCancel;
+    private javax.swing.JButton btDelete;
+    private javax.swing.JButton btEdit;
+    private javax.swing.JButton btSave;
+    private javax.swing.JComboBox<String> cbCategorySupplier1;
+    private javax.swing.JComboBox<String> cbCategorySupplier2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLAddress;
+    private javax.swing.JLabel jLCategorySupplier;
+    private javax.swing.JLabel jLCompanyName;
+    private javax.swing.JLabel jLEmail;
+    private javax.swing.JLabel jLPhoneNumber;
+    private javax.swing.JLabel jLSerch;
+    private javax.swing.JLabel jLSuplierCode;
+    private javax.swing.JLabel jLSupplier;
+    private javax.swing.JLabel jLSupplierName;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblSupplier;
+    private javax.swing.JTextField txtCompanyName;
+    private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtSupplierCode;
+    private javax.swing.JTextField txtSupplierName;
+    private javax.swing.JTextField txtemail;
+    private javax.swing.JTextField txtphoneNumber;
+    // End of variables declaration//GEN-END:variables
+}
